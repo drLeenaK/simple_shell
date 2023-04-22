@@ -25,7 +25,6 @@ int wait_for_process(pid_t pid);
 pid_t fork_process(void);
 pid_t get_pid(void);
 pid_t get_ppid(void);
-char **setup_environment(void);
 
 #endif
 
