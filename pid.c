@@ -8,5 +8,5 @@
 
 pid_t get_pid()
 {
-	return getpid();
+	return (getpid());
 }
