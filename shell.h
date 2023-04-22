@@ -26,6 +26,11 @@ pid_t fork_process(void);
 pid_t get_pid(void);
 pid_t get_ppid(void);
 char **setup_environment(void);
+char *path_finder(char *command);
+int find_path(char *str);
+char **tokenize_path(int index, char *str);
+char *search_directories(char **path_tokens, char *command);
+char *build_path(char *directory, char *command);
 
 #endif
 
