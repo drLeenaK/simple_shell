@@ -14,27 +14,27 @@
 
 char **token_interface(char *line, const char *delim, int *token_count)
 {
-        char **tokens;
-        char *token;
-        int i;
+	char **tokens;
+	char *token;
+	int i;
 
-        tokens = malloc(sizeof(char *) * 1024);
-        if (tokens == NULL)
-        {
-                perror("malloc failed");
-                exit(EXIT_FAILURE);
-        }
+	tokens = malloc(sizeof(char *) * 1024);
+	if (tokens == NULL)
+	{
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
+	}
 
-        token = strtok(line, delim);
-        for (i = 0; token != NULL; i++)
-        {
-                tokens[i] = token;
-                token = strtok(NULL, delim);
-        }
-        tokens[i] = NULL;
-        *token_count = i;
+	token = strtok(line, delim);
+	for (i = 0; token != NULL; i++)
+	{
+		tokens[i] = token;
+		token = strtok(NULL, delim);
+	}
+	tokens[i] = NULL;
+	*token_count = i;
 
-        return (tokens);
+	return (tokens);
 }
 
 /**
@@ -45,32 +45,33 @@ char **token_interface(char *line, const char *delim, int *token_count)
 
 void cd_b(char *line)
 {
-        int index;
-        int token_count;
-        char **param_array;
-        const char *delim = "\n\t ";
-        char **token_interface(char *line, const char *delim, int *token_count);
+	int index;
+	int token_count;
+	char **param_array;
+	const char *delim = "\n\t ";
 
-        token_count = 0;
-        param_array = token_interface(line, delim, &token_count);
+	char **token_interface(char *line, const char *delim, int *token_count);
 
-        if (param_array[0] == NULL)
-        {
-                double_free(param_array);
-                return;
-        }
+	token_count = 0;
+	param_array = token_interface(line, delim, &token_count);
 
-        if (param_array[1] == NULL)
-        {
-                index = find_path("HOME");
-                chdir((environ[index]) + 5);
-        }
-        else if (_strcmp(param_array[1], "-") == 0)
-                printf("%s\n", param_array[1]);
-        else
-                chdir(param_array[1]);
+	if (param_array[0] == NULL)
+	{
+		double_free(param_array);
+		return;
+	}
 
-        double_free(param_array);
+	if (param_array[1] == NULL)
+	{
+		index = find_path("HOME");
+		chdir((environ[index]) + 5);
+	}
+	else if (_strcmp(param_array[1], "-") == 0)
+		printf("%s\n", param_array[1]);
+	else
+		chdir(param_array[1]);
+
+	double_free(param_array);
 }
 
 /**
@@ -82,12 +83,12 @@ void cd_b(char *line)
 
 void env_b(__attribute__((unused))char *line)
 {
-        int i;
+	int i;
 
-        for (i = 0; environ[i] != NULL; i++)
-        {
-                printf("%s\n", environ[i]);
-        }
+	for (i = 0; environ[i] != NULL; i++)
+	{
+		printf("%s\n", environ[i]);
+	}
 }
 
 /**
@@ -99,8 +100,8 @@ void env_b(__attribute__((unused))char *line)
 
 void exit_b(char *line)
 {
-        free(line);
-        exit(0);
+	free(line);
+	exit(0);
 }
 
 /**
@@ -112,23 +113,23 @@ void exit_b(char *line)
 
 void (*check_built_ins(char *str))(char *str)
 {
-        int i;
+	int i;
 
-        builtin_t buildin[] = {
-                {"exit", exit_b},
-                {"env", env_b},
-                {"cd", cd_b},
-                {NULL, NULL}
-        };
+	builtin_t buildin[] = {
+		{"exit", exit_b},
+		{"env", env_b},
+		{"cd", cd_b},
+		{NULL, NULL}
+	};
 
-        for (i = 0; buildin[i].built != NULL; i++)
-        {
-                if (_strcmp(str, buildin[i].built) == 0)
-                {
-                        return (buildin[i].f);
-                }
-        }
-        return (NULL);
+	for (i = 0; buildin[i].built != NULL; i++)
+	{
+		if (_strcmp(str, buildin[i].built) == 0)
+		{
+			return (buildin[i].f);
+		}
+	}
+	return (NULL);
 }
 
 /**
@@ -141,13 +142,13 @@ void (*check_built_ins(char *str))(char *str)
 
 int built_in(char **command, char *line)
 {
-        void (*build)(char *);
+	void (*build)(char *);
 
-        build = check_built_ins(command[0]);
-        if (build == NULL)
-                return (-1);
-        if (_strcmp("exit", command[0]) == 0)
-                double_free(command);
-        build(line);
-        return (0);
+	build = check_built_ins(command[0]);
+	if (build == NULL)
+		return (-1);
+	if (_strcmp("exit", command[0]) == 0)
+		double_free(command);
+	build(line);
+	return (0);
 }
